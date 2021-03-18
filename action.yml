@@ -1,0 +1,13 @@
+name: 'EAP component deploy action'
+description: 'Continuous build and deployment of EAP components.'
+inputs:
+  token:
+    description: 'The secret required for the deployment to the EAP nexus'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - run: echo "Test with token ${{inputs.token}}"
+      shell: bash
+    - run: echo "Test 2"
+      shell: bash
