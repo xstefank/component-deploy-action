@@ -1,0 +1,20 @@
+name: 'EAP component deploy action'
+description: 'Continuous build and deployment of EAP components.'
+inputs:
+  token:
+    description: 'The secret required for the deployment to the EAP nexus'
+    required: true
+runs:
+  using: "composite"
+  steps:
+    - run: |
+        cd $GITHUB_ACTION_PATH
+        gpg --quiet --batch --yes --decrypt --passphrase="${{inputs.token}}" --output maven-settings.xml ./maven-settings.xml.gpg
+        cd $GITHUB_WORKSPACE
+        NEW_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)-$(git rev-parse --short HEAD)
+        echo "Setting version to $NEW_VERSION"
+        cat $GITHUB_ACTION_PATH/maven-settings.xml
+#        mvn versions:set -DnewVersion=$NEW_VERSION
+#        mvn clean deploy -s $GITHUB_ACTION_PATH/maven-settings.xml -DaltDeploymentRepository=openshift-nexus::default::http://nexus-nexus.6923.rh-us-east-1.openshiftapps.com/repository/eap-components/
+      shell: bash
+
