@@ -15,7 +15,7 @@ runs:
         cd $GITHUB_ACTION_PATH
         gpg --quiet --batch --yes --decrypt --passphrase="${{inputs.token}}" --output maven-settings.xml ./maven-settings.xml.gpg
         cd $GITHUB_WORKSPACE
-        NEW_VERSION=$(date '+%Y%m%d%H%M%S')-$(git rev-parse --short HEAD)-$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
+        NEW_VERSION=$(date -u '+%Y%m%d%H%M%S')-$(git rev-parse --short HEAD)-$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)
         echo "Setting version to $NEW_VERSION"
         mvn versions:set -DnewVersion=$NEW_VERSION
         mvn clean deploy -s $GITHUB_ACTION_PATH/maven-settings.xml -DaltDeploymentRepository=openshift-nexus::default::http://nexus-nexus.6923.rh-us-east-1.openshiftapps.com/repository/eap-components/
