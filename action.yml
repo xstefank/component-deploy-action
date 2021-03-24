@@ -6,6 +6,7 @@ inputs:
     required: true
   additional-params:
     description: 'By default, the action runs `mvn clean deploy` command. You can use this input if you want to add any additional parameters.'
+    required: false
 runs:
   using: "composite"
   steps:
