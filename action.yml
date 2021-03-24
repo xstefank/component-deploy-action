@@ -4,6 +4,8 @@ inputs:
   token:
     description: 'The secret required for the deployment to the EAP nexus'
     required: true
+  additional-params:
+    description: 'By default, the action runs `mvn clean deploy` command. You can use this input if you want to add any additional parameters.'
 runs:
   using: "composite"
   steps:
@@ -18,6 +20,6 @@ runs:
         NEW_VERSION=$(date -u '+%Y%m%d%H%M%S')-$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)-$(git rev-parse --short HEAD)
         echo "Setting version to $NEW_VERSION"
         mvn versions:set -DnewVersion=$NEW_VERSION
-        mvn clean deploy -s $GITHUB_ACTION_PATH/maven-settings.xml -DaltDeploymentRepository=openshift-nexus::default::http://nexus-nexus.6923.rh-us-east-1.openshiftapps.com/repository/eap-components/
+        mvn clean deploy -s $GITHUB_ACTION_PATH/maven-settings.xml -DaltDeploymentRepository=openshift-nexus::default::http://nexus-nexus.6923.rh-us-east-1.openshiftapps.com/repository/eap-components/ ${{inputs.additional-params}}
       shell: bash
 
