@@ -21,6 +21,6 @@ runs:
         NEW_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)-$(git rev-parse --short HEAD)-$(date -u '+%Y%m%d%H%M%S')
         echo "Setting version to $NEW_VERSION"
         mvn versions:set -DnewVersion=$NEW_VERSION
-        mvn clean deploy -s $GITHUB_ACTION_PATH/maven-settings.xml -DaltDeploymentRepository=openshift-nexus::default::http://nexus-nexus.6923.rh-us-east-1.openshiftapps.com/repository/eap-components/ ${{inputs.additional-params}}
+        mvn clean deploy -s $GITHUB_ACTION_PATH/maven-settings.xml -DaltDeploymentRepository=openshift-nexus::default::https://nexus-nexus.6923.rh-us-east-1.openshiftapps.com/repository/eap-components/ ${{inputs.additional-params}}
       shell: bash
 
