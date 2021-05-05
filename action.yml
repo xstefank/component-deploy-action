@@ -1,8 +1,8 @@
-name: 'EAP component deploy action'
-description: 'Continuous build and deployment of EAP components.'
+name: 'Component deploy action'
+description: 'Continuous build and deployment of components.'
 inputs:
   token:
-    description: 'The secret required for the deployment to the EAP nexus'
+    description: 'The secret required for the deployment to the configured nexus'
     required: true
   additional-params:
     description: 'By default, the action runs `mvn clean deploy` command. You can use this input if you want to add any additional parameters.'
@@ -21,6 +21,6 @@ runs:
         NEW_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)-$(date -u '+%Y%m%d%H%M%S')-$(git rev-parse --short HEAD)
         echo "Setting version to $NEW_VERSION"
         mvn versions:set -DnewVersion=$NEW_VERSION
-        mvn clean deploy -s $GITHUB_ACTION_PATH/maven-settings.xml -DaltDeploymentRepository=openshift-nexus::default::https://nexus-nexus.6923.rh-us-east-1.openshiftapps.com/repository/eap-components/ ${{inputs.additional-params}}
+        mvn clean deploy -s $GITHUB_ACTION_PATH/maven-settings.xml -DaltDeploymentRepository=openshift-nexus::default::https://nexus-nexus.6923.rh-us-east-1.openshiftapps.com/repository/components/ ${{inputs.additional-params}}
       shell: bash
 
