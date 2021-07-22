@@ -16,6 +16,7 @@ runs:
           exit 1
         fi
         cd $GITHUB_ACTION_PATH
+        mvn -v
         gpg --quiet --batch --yes --decrypt --passphrase="${{inputs.token}}" --output maven-settings.xml ./maven-settings.xml.gpg
         cd $GITHUB_WORKSPACE
         NEW_VERSION=$(mvn -q -Dexec.executable=echo -Dexec.args='${project.version}' --non-recursive exec:exec)-$(date -u '+%Y%m%d%H%M%S')-$(git rev-parse --short HEAD)
